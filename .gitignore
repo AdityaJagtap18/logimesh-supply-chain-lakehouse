@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.pytest_cache/
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# Data & Lakehouse
+data/duckdb/*.db
+data/duckdb/*.db.wal
+data/duckdb/*.duckdb
+data/duckdb/*.duckdb.wal
+data/iceberg/*
+!data/iceberg/.gitkeep
+data/raw/*.parquet
+!data/raw/.gitkeep
+
+# Environment
+.env
+*.log

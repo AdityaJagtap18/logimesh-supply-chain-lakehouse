@@ -1,0 +1,7 @@
+logimesh_profile:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../data/duckdb/logimesh.duckdb"
+      threads: 4

@@ -1,0 +1,164 @@
+{
+  "pipeline_name": "logimesh_supply_chain_mesh",
+  "start_time": "2026-11-19T13:38:56.316586+00:00",
+  "end_time": "2026-11-19T13:38:57.595182+00:00",
+  "overall_status": "SUCCESS",
+  "total_duration_ms": 1278.59,
+  "tasks_executed": 8,
+  "task_runs": [
+    {
+      "task_id": "extract_and_stage_raw_data",
+      "description": "Generate and stage multi-tier orders, inventory & warehouse datasets",
+      "status": "SUCCESS",
+      "duration_ms": 450.82,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 450.82,
+        "tables_ingested": {
+          "warehouses": 5,
+          "products": 50,
+          "orders": 1500,
+          "order_items": 2402,
+          "inventory": 22500
+        },
+        "raw_dir": "C:\\Users\\Admin\\Desktop\\all poc project\\Enterprise-AI-Data-Portfolio\\PRJ-02-LogiMesh\\data\\raw"
+      }
+    },
+    {
+      "task_id": "validate_ingestion_data_quality",
+      "description": "Enforce Great Expectations data quality contracts and schemas",
+      "status": "SUCCESS",
+      "duration_ms": 416.06,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 416.06,
+        "total_assertions": 11,
+        "passed_assertions": 11,
+        "pass_rate_pct": 100.0
+      }
+    },
+    {
+      "task_id": "sync_iceberg_snapshots",
+      "description": "Register ACID Lakehouse snapshots and partition metadata in Apache Iceberg",
+      "status": "SUCCESS",
+      "duration_ms": 31.54,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 31.54,
+        "tables_synced": [
+          "orders",
+          "order_items",
+          "warehouses"
+        ],
+        "orders_snapshot_id": 1795095537186,
+        "items_snapshot_id": 1795095537199
+      }
+    },
+    {
+      "task_id": "run_dbt_staging_transformations",
+      "description": "Execute dbt staging SQL models in DuckDB OLAP engine",
+      "status": "SUCCESS",
+      "duration_ms": 96.93,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 96.93,
+        "views_created": [
+          "stg_orders",
+          "stg_order_items",
+          "stg_inventory"
+        ],
+        "stg_orders_count": 1500
+      }
+    },
+    {
+      "task_id": "run_dbt_marts_transformations",
+      "description": "Compute dimensional models and stockout risk marts in DuckDB",
+      "status": "SUCCESS",
+      "duration_ms": 93.28,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 93.28,
+        "tables_created": [
+          "dim_warehouses",
+          "fct_delivery_performance",
+          "fct_stockout_risks"
+        ],
+        "fct_stockout_risks_count": 250
+      }
+    },
+    {
+      "task_id": "test_dbt_data_models",
+      "description": "Verify dbt data integrity tests (uniqueness, not null, status domains)",
+      "status": "SUCCESS",
+      "duration_ms": 98.7,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 98.7,
+        "total_dbt_tests": 4,
+        "passed_dbt_tests": 4,
+        "tests": [
+          {
+            "name": "test_unique_warehouse_id",
+            "pass": true
+          },
+          {
+            "name": "test_accepted_values_order_status",
+            "pass": true
+          },
+          {
+            "name": "test_non_negative_reorder_qty",
+            "pass": true
+          },
+          {
+            "name": "test_valid_on_time_delivery_pct",
+            "pass": true
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "sync_bigquery_manifest",
+      "description": "Generate Google BigQuery external table DDLs and cluster specs",
+      "status": "SUCCESS",
+      "duration_ms": 0.03,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 0.03,
+        "ddl_tables": [
+          "orders",
+          "order_items",
+          "inventory",
+          "fct_stockout_risks"
+        ],
+        "project_id": "logimesh-supply-chain-analytics",
+        "dataset_id": "logistics_lakehouse",
+        "cost_estimation": {
+          "estimated_bytes_scanned": 262144000,
+          "estimated_tb_scanned": 0.000238,
+          "estimated_cost_usd": 0.00149,
+          "pricing_tier": "BigQuery On-Demand ($6.25/TB)",
+          "free_tier_eligible": true
+        }
+      }
+    },
+    {
+      "task_id": "evaluate_stockout_risk_alerts",
+      "description": "Evaluate critical stockout alerts and capital risk metrics",
+      "status": "SUCCESS",
+      "duration_ms": 90.69,
+      "output": {
+        "status": "SUCCESS",
+        "duration_ms": 90.69,
+        "summary": {
+          "total_monitored_skus": 250,
+          "critical_stockouts": 0,
+          "high_imminent_stockouts": 0,
+          "moderate_safety_breaches": 3,
+          "healthy_skus": 231,
+          "total_capital_at_risk_usd": 10284.18,
+          "critical_percentage": 0.0
+        }
+      }
+    }
+  ]
+}

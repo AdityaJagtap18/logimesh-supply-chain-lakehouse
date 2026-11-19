@@ -1,0 +1,135 @@
+{
+  "timestamp": "2026-11-19T13:40:21.505285+00:00",
+  "total_assertions": 11,
+  "passed_assertions": 10,
+  "failed_assertions": 1,
+  "pass_rate_pct": 90.91,
+  "overall_status": "FAILED",
+  "checks": [
+    {
+      "check_name": "orders_order_id_not_null",
+      "target_table": "orders",
+      "target_column": "order_id",
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "success": true,
+      "observed_value": 0,
+      "expected_value": 0,
+      "details": "Null order_ids observed: 0"
+    },
+    {
+      "check_name": "orders_order_id_unique",
+      "target_table": "orders",
+      "target_column": "order_id",
+      "expectation_type": "expect_column_values_to_be_unique",
+      "success": true,
+      "observed_value": 100,
+      "expected_value": 100,
+      "details": "Unique order_ids: 100/100"
+    },
+    {
+      "check_name": "orders_status_valid_domain",
+      "target_table": "orders",
+      "target_column": "order_status",
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "success": true,
+      "observed_value": [
+        "processing",
+        "shipped",
+        "delivered"
+      ],
+      "expected_value": [
+        "processing",
+        "shipped",
+        "delivered",
+        "canceled"
+      ],
+      "details": "Invalid statuses observed: []"
+    },
+    {
+      "check_name": "orders_row_count_envelope",
+      "target_table": "orders",
+      "target_column": null,
+      "expectation_type": "expect_table_row_count_to_be_between",
+      "success": false,
+      "observed_value": 100,
+      "expected_value": "[500, 50000]",
+      "details": "Total orders row count: 100"
+    },
+    {
+      "check_name": "orders_delivery_date_chronological",
+      "target_table": "orders",
+      "target_column": "order_delivered_customer_date",
+      "expectation_type": "expect_column_pair_values_a_to_be_greater_than_b",
+      "success": true,
+      "observed_value": 0,
+      "expected_value": 0,
+      "details": "Deliveries occurring before purchase: 0"
+    },
+    {
+      "check_name": "items_price_strictly_positive",
+      "target_table": "order_items",
+      "target_column": "price",
+      "expectation_type": "expect_column_values_to_be_between",
+      "success": true,
+      "observed_value": 35.04,
+      "expected_value": "> 0.0",
+      "details": "Minimum observed price: $35.04"
+    },
+    {
+      "check_name": "items_freight_non_negative",
+      "target_table": "order_items",
+      "target_column": "freight_value",
+      "expectation_type": "expect_column_values_to_be_between",
+      "success": true,
+      "observed_value": 5.58,
+      "expected_value": ">= 0.0",
+      "details": "Minimum observed freight: $5.58"
+    },
+    {
+      "check_name": "items_referential_keys_not_null",
+      "target_table": "order_items",
+      "target_column": "product_id, warehouse_id",
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "success": true,
+      "observed_value": {
+        "null_products": 0,
+        "null_warehouses": 0
+      },
+      "expected_value": {
+        "null_products": 0,
+        "null_warehouses": 0
+      },
+      "details": "Null FKs: products=0, warehouses=0"
+    },
+    {
+      "check_name": "inventory_stock_on_hand_non_negative",
+      "target_table": "inventory",
+      "target_column": "stock_on_hand",
+      "expectation_type": "expect_column_values_to_be_between",
+      "success": true,
+      "observed_value": 18,
+      "expected_value": ">= 0",
+      "details": "Minimum stock on hand observed: 18"
+    },
+    {
+      "check_name": "inventory_lead_time_within_bounds",
+      "target_table": "inventory",
+      "target_column": "lead_time_days",
+      "expectation_type": "expect_column_values_to_be_between",
+      "success": true,
+      "observed_value": "[3, 33]",
+      "expected_value": "[1, 60]",
+      "details": "Lead time range: min=3, max=33 days"
+    },
+    {
+      "check_name": "inventory_safety_stock_strictly_positive",
+      "target_table": "inventory",
+      "target_column": "safety_stock_level",
+      "expectation_type": "expect_column_values_to_be_between",
+      "success": true,
+      "observed_value": 10,
+      "expected_value": "> 0",
+      "details": "Minimum safety stock level: 10"
+    }
+  ]
+}
